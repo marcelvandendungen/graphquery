@@ -4,8 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>GraphQuery</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <style>
+    .formlabel {
+        text-align: right;
+    }
+    </style>
+
 </head>
 
 <body class="container">
@@ -14,11 +20,13 @@
         <h3>Azure AD graph query</h3>
     </div>
 
-    <form class="form-horizontal" id="addAppForm">
-        <div class="form-group">
+    <form class="form" id="addAppForm">
+        <div class="formlabel">
             <label class="control-label col-sm-2" for="graphUrl">Graph query: </label>
-            <div class="col-sm-8">
-                <input class="form-control" type="text" id="graphUrl" name="graphUrl" value="" list="queries" />
+        </div>
+        <div class="col-sm-8">
+            <div class="input-group">
+                <input class="col-sm-10 form-control" type="text" id="graphUrl" name="graphUrl" value="" list="queries" />
                 <datalist id="queries">
                     <option value="/me">Info on logged in user</option>
                     <option value="/{tid}/users">Users in directory</option>
@@ -27,28 +35,43 @@
                     <option value="/{tid}/servicePrincipals">Service Principals</option>
                     <option value="/{tid}/domains">Domains</option>
                 </datalist>
+                <span class="input-group-btn">
+                    <input type="submit" id="submit" class="btn btn-primary" value="Query" />
+                </span>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="response">Response: </label>
-            <div class="col-sm-6">
-                <textarea name="response" id="response" cols="102" rows="20"></textarea>
-            </div>
-        </div>
-        <div class="col-sm-2"></div>
-        <div class="form-group col-sm-2">
-            <input type="submit" id="submit" class="btn btn-primary" value="Query" />
         </div>
     </form>
-    <div>
-        <a href="https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/api-catalog">Azure AD Graph API reference</a>
+    <div class="row"></div>
+    <div class="formlabel">
+        <label class="control-label col-sm-2" for="response">Response: </label>
+    </div>
+    <div class="col-sm-6">
+        <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#raw">Raw</a></li>
+                <li><a data-toggle="tab" href="#formatted">Formatted</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="raw" class="tab-pane fade in active">
+                <textarea name="response" id="response" cols="102" rows="20"></textarea>
+            </div>
+            <div id="formatted" class="tab-pane fade">
+                <div>formatted view</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/api-catalog">Azure AD Graph API reference</a>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
-        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
-        <script type="text/javascript" src="./config.js"></script>
-        <script type="text/javascript" src="./app.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
+    <script type="text/javascript" src="./config.js"></script>
+    <script type="text/javascript" src="./app.js"></script>
 </body>
 
 </html>
