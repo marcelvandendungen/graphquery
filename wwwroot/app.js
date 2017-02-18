@@ -17,9 +17,18 @@
             var $path = $('#graphUrl').val();
             var path = $path.replace("{tid}", tid);
 
+            var url = "https://graph.windows.net" + path;
+            if (url.indexOf('?') === -1) {
+                url += "?api-version=1.6";
+            } else {
+                if (url.indexOf('api-version') === -1) {
+                    url += "&api-version=1.6";
+                }
+            }
+
             $.ajax({
                 type: "GET",
-                url: "https://graph.windows.net" + path + "?api-version=1.6",
+                url: url,
                 headers: {
                 'Accept': 'application/json;odata=nometadata',
                 'Authorization': 'Bearer ' + token,
@@ -56,16 +65,14 @@
 
     var that = this;
 
-    var $submit = $('#submit');
-    $submit.on('click', function (e) {
-        executeGraphQuery(authContext);
-        e.preventDefault();
-    });
-
     var user = authContext.getCachedUser();
     if (user) {
 
-        executeGraphQuery(authContext);
+        var $submit = $('#submit');
+        $submit.on('click', function (e) {
+            executeGraphQuery(authContext);
+            e.preventDefault();
+        });
 
     } else {
 
