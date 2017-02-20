@@ -1,0 +1,45 @@
+.canvas {
+	font: 10pt Georgia;
+  background-color: #f9f9f9;
+	/*background-color:#ECECEC;*/
+	color:#000000;
+	border:solid 1px #CECECE;
+}
+.curly {
+	color:#00AA00;
+	font-weight:bold;
+}
+.square {
+	color:#0066BB;
+	font-weight:bold;
+}
+.property {
+	color:#888888;
+	font-weight:bold;
+}
+.string {
+	color:#CC0000; /* #007777;*/
+}
+.number {
+	color:#AA00AA;
+}
+.boolean {
+  color:#0000FF;
+}
+.null {
+  color:#9e9e9e;
+}
+.comma {
+  color:#000000;
+  font-weight:bold;
+}
+pre.json {
+  background-color: #f9f9f9;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+pre.json img {
+  cursor:pointer;
+  border:none;
+  margin-bottom:-1px;
+}

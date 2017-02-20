@@ -1,0 +1,9 @@
+.formlabel {
+    text-align: right;
+}
+#canvas {
+    display:block;
+    height: 404px;
+    width: 728px;
+    overflow:scroll;
+}

@@ -1,12 +1,15 @@
 (function () {
 
+    var formatter = new JsonFormatter();
+    var json = '';
+
     var getTenantId = function (token) {
         var parts = token.split(".");
         var claims = JSON.parse(atob(parts[1]));
         return claims.tid;
     };
 
-    var executeGraphQuery = function (adal) {
+    var executeGraphQuery = function (adal, query, callback) {
 
         adal.acquireToken("https://graph.windows.net/", function(error, token) {
         
@@ -14,8 +17,7 @@
 
             var tid = getTenantId(token);
 
-            var $path = $('#graphUrl').val();
-            var path = $path.replace("{tid}", tid);
+            var path = query.replace("{tid}", tid);
 
             var url = "https://graph.windows.net" + path;
             if (url.indexOf('?') === -1) {
@@ -34,13 +36,11 @@
                 'Authorization': 'Bearer ' + token,
             },
             success: function(data) {
-                var $testarea = $('#response');
-                $testarea.val(JSON.stringify(data, null, 2));
-                console.log(data);
+                callback(data);
             }});
         } else if (error) {
             console.log(error);
-        } 
+        }
 
         });
     };
@@ -63,14 +63,21 @@
         window.location = authContext._getItem(authContext.CONSTANTS.STORAGE.LOGIN_REQUEST);
     }
 
-    var that = this;
-
     var user = authContext.getCachedUser();
     if (user) {
 
         var $submit = $('#submit');
         $submit.on('click', function (e) {
-            executeGraphQuery(authContext);
+
+            var $path = $('#graphUrl').val();
+            executeGraphQuery(authContext, $path, function(data) {
+
+                var $textarea = $('#response');
+                json = JSON.stringify(data, null, 2);
+                $textarea.val(json);
+                var canvas = $('#canvas');
+                canvas.html(formatter.formatJson(data));
+            });
             e.preventDefault();
         });
 
