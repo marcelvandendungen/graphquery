@@ -7,3 +7,7 @@
     width: 728px;
     overflow:scroll;
 }
+textarea {
+    font-family: monospace;
+    white-space: pre;
+}

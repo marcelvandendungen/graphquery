@@ -20,14 +20,16 @@ JsonFormatter.prototype = (function () {
         if (arr.length === 0) {
             return open + " " + close;
         } else {
-            var that = this;
-            return open + "\n" + arr.reduce(function(previous, current, index) {
+            return open + insertCollapser(function () {
+                return arr.reduce(function(previous, current, index) {
                     previous += getIndent(indent + 1) + formatElement(current, indent + 1);
                     if (index < arr.length) {
                         previous += "<span class='comma'>,</span>" + "\n";
                     } 
                     return previous;
-                }, "") + getIndent(indent) + close;
+                }, "");
+
+            }) + getIndent(indent) + close;
         }
         return html;
     }
@@ -50,9 +52,12 @@ JsonFormatter.prototype = (function () {
         return formatPropertyKey(key, indent) + formatPropertyValue(prop, indent);
     }
 
+    var insertCollapser = function (func) {
+        return "<span><img src=\"img/min.gif\" class=\"image\" /></span><span class='collapsible'>\n" + func() + "</span>";
+    }
+
     var formatObjectProperties = function (obj, indent) {
 
-        var that = this;
         var count = Object.keys(obj).length;
         return Object.keys(obj).reduce(function(previous, current, index) {
             previous += getIndent(indent + 1) + formatProperty(obj[current], current, indent + 1);
@@ -73,17 +78,18 @@ JsonFormatter.prototype = (function () {
         if (Object.keys(obj).length === 0) {
             return getIndent(indent) + open + " " + getIndent(indent) + close;
         } else {
-            var that = this;
-            return open + "\n" + formatObjectProperties(obj, indent) + getIndent(indent) + close;
+            return open + insertCollapser(function () {
+                return formatObjectProperties(obj, indent);
+            }) + getIndent(indent) + close;
         }
-    }
-
-    var formatUndefined = function (obj, indent) {
-        return "<span class='null'>" + "undefined" + "</span>";
     }
 
     var formatNull = function (obj, indent) {
         return "<span class='null'>" + "null" + "</span>";
+    }
+
+    var formatUndefined = function (obj, indent) {
+        return "<span class='null'>" + "undefined" + "</span>";
     }
 
     var formatNumber = function (obj, indent) {
@@ -109,6 +115,22 @@ JsonFormatter.prototype = (function () {
         'String': formatString
     }
 
+    var toggleNode = function (img) {
+        var collapsible = img.parentNode.nextSibling;
+        if (!collapsible) {
+            return
+        };
+
+        if (collapsible.style.display === "none") {
+            collapsible.style.display = "inline";
+            img.src = "img/min.gif";
+        } else {
+            collapsible.style.display = "none";
+            img.src = "img/plus.gif";
+        }
+
+    }
+
     var formatJson = function (obj) {
 
         var type = getType(obj);
@@ -116,6 +138,7 @@ JsonFormatter.prototype = (function () {
     }
 
     return {
+        toggleNode: toggleNode,
         formatJson: formatJson
     }
 

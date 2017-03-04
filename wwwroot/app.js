@@ -66,6 +66,8 @@
     var user = authContext.getCachedUser();
     if (user) {
 
+        $('body').on('click', '.image', function() { formatter.toggleNode(this); });
+
         var $submit = $('#submit');
         $submit.on('click', function (e) {
 
